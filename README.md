@@ -1,4 +1,5 @@
 # IRCFlashClient - Projet Abandonné
+by sMug (Jérôme Fafchamps)
 
 ![Flash Player Logo](flash_player_logo.png)
 
