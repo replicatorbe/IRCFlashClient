@@ -1,4 +1,4 @@
-# ChatFlash - Projet Abandonné
+# IRCFlashClient - Projet Abandonné
 
 ![Flash Player Logo](flash_player_logo.png)
 
@@ -42,7 +42,7 @@ Si vous souhaitez utiliser ce projet à des fins commerciales ou obtenir une lic
 
 
 
-# ChatFlash - Abandoned Project
+# IrcFlashClient - Abandoned Project
 
 ![Flash Player Logo](flash_player_logo.png)
 
