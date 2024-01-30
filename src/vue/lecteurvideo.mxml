@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   x="11" y="9" width="332" height="282" initialize="init()" title="Webcam">
+
+		<fx:Script>
+			<![CDATA[
+				import modele.ConfigEnvironnement;
+				
+				import mx.controls.Alert;
+				import mx.core.UIComponent;
+				import mx.events.CloseEvent;
+				import mx.managers.PopUpManager;
+				
+				private var nc:NetConnection;
+				private var sendNS:NetStream;
+				private var neerPeerID:String;
+				
+				
+				public function init():void {
+					initNetConnection();	
+				}
+			
+				public function demarrage(id:String):void {
+					contact_peer_id_text.text=id;
+					addContact();
+				}
+				
+				private function initNetConnection():void {
+					nc = new NetConnection();
+					nc.addEventListener(NetStatusEvent.NET_STATUS, netStatusEvent);
+					nc.connect(ConfigEnvironnement.getInstance().getServeurCam());
+				}
+				
+				private function netStatusEvent(event:NetStatusEvent):void {
+					
+					if (event.info.code == 'NetConnection.Connect.Success') {
+					
+					}
+				}
+				
+				
+				private function addContact():void {
+					var nc2:NetConnection = new NetConnection();
+					nc2.addEventListener(NetStatusEvent.NET_STATUS, function (event:NetStatusEvent):void {
+						var receiveNS:NetStream = new NetStream(nc2, contact_peer_id_text.text);
+						receiveNS.addEventListener(NetStatusEvent.NET_STATUS, netStatusEvent);
+						receiveNS.play('video');
+						
+						var video:Video = new Video();
+						video.attachNetStream(receiveNS);
+					
+						var uic:UIComponent = new UIComponent();
+						uic.width = 252;
+						uic.height = 192;
+						uic.addChild(video);
+						uic.toString();
+						
+					my_video_display.addChild(uic);
+					});
+					nc2.connect(ConfigEnvironnement.getInstance().getServeurCam());
+				}
+			]]>
+			
+		</fx:Script>
+	
+	<mx:HBox id="video_stack" top="10" left="10">
+		<mx:VBox width="275" height="226">
+			<mx:HBox>
+				<mx:VideoDisplay id="my_video_display" width="252" height="192"/>
+			</mx:HBox>
+			<mx:HBox id="add_contact_container" visible="true">
+				<mx:TextInput id="contact_peer_id_text" width="200" visible="false" />
+			</mx:HBox>
+		</mx:VBox>
+	</mx:HBox>
+	</s:TitleWindow>
+

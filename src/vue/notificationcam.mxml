@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<ToastMessageBase xmlns="com.fnicollet.toaster.message.*"
+				  xmlns:fx="http://ns.adobe.com/mxml/2009"
+				  xmlns:mx="library://ns.adobe.com/flex/mx"
+				  xmlns:s="library://ns.adobe.com/flex/spark"
+				  width="365" height="90" borderVisible="false">  
+	
+	<fx:Script>     
+																	
+		<![CDATA[      
+			import mx.effects.Glow;     
+			
+			[Bindable]    
+			private var _sampleCaption:String = null;   
+			[Bindable]     
+			private var _imageSource:String = null;  
+			
+			public function get sampleCaption():String
+			{     
+				return _sampleCaption;     
+			}      
+			
+			public function set sampleCaption(value:String):void
+			{     
+				_sampleCaption = value;       
+			}      
+			
+ 
+			public function get imageSource():String
+			{     
+				return _imageSource;      
+			}       
+			
+			
+			public function set imageSource(value:String):void
+			{         _imageSource = value;       
+			}    
+			
+		]]>   
+		
+	</fx:Script> 
+	
+	<mx:Canvas cornerRadius="10" backgroundAlpha="0.5" backgroundColor="black" borderStyle="solid" filters="{[]}" width="100%" height="100%" verticalScrollPolicy="off"  horizontalScrollPolicy="off">     
+		<mx:HBox width="100%" height="100%" paddingTop="10" paddingBottom="10" paddingLeft="10"  paddingRight="10">   
+			<mx:Image id="iconImage" width="64" maintainAspectRatio="true" source="vue/assets/webcam.png"/>     
+
+		<s:VGroup x="71" y="0" width="271" height="200">
+			<mx:Text id="caption" width="160" height="38" color="white" fontFamily="Arial"
+					 fontSize="14" fontWeight="bold" selectable="false" text="{_sampleCaption}"/>
+			<s:HGroup x="71" y="0" width="270" height="200">
+			<s:Button id="accepter" width="72" label="Accepter"/>
+				<s:Button id="refuser" width="74" label="Refuser"/>
+				<s:Button id="ignorer" width="74" label="Ignorer"/>
+		</s:HGroup>
+		</s:VGroup>
+		</mx:HBox>   
+	</mx:Canvas> 
+</ToastMessageBase> 

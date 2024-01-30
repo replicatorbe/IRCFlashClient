@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow x="11" y="9" width="800" height="400"  xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:mx="library://ns.adobe.com/flex/mx" 
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   mouseDownOutside="PopUpManager.removePopUp(this)" creationComplete="init()">
+	<fx:Declarations>
+		<!-- Placer ici les éléments non visuels (services et objets de valeur, par exemple). -->
+		
+	</fx:Declarations>
+
+	<fx:Script>
+		<![CDATA[
+			import connexion.ConnexionIRC;
+			
+			import ctrl.ListeSalonCtrl;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.managers.PopUpManager;
+			
+			public var ctrle:ListeSalonCtrl;
+			
+			public function init():void 
+			{
+				ctrle=new ListeSalonCtrl(this);
+				
+			}
+	
+		]]>
+	</fx:Script>
+
+		<s:DataGrid id="datasalon" x="10" y="10"
+ width="95%" height="90%" sortableColumns="false" styleName="datasalon" requestedRowCount="4"  doubleClickEnabled="true">
+		</s:DataGrid>
+	</s:TitleWindow>

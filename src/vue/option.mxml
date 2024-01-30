@@ -1,0 +1,48 @@
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   x="11" y="9" width="576" height="360" 
+			   mouseDownOutside="PopUpManager.removePopUp(this)" creationComplete="init()" title="Options">
+	<fx:Declarations>
+		
+		<s:RadioButtonGroup id="antipv"/>
+		<!-- Placer ici les éléments non visuels (services et objets de valeur, par exemple). -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import ctrl.OptionCtrl;
+			
+			import mx.managers.PopUpManager;
+			
+			private var ctrl:OptionCtrl;
+			
+			public function init():void 
+			{
+				ctrl=new OptionCtrl(this);
+				
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Form x="10" y="9" width="554" height="307">
+		<s:FormItem label="Anti message privé">
+			<s:CheckBox id="mp" label="Activé"/>
+		</s:FormItem>
+		<s:FormItem label="Système de notification">
+			<s:CheckBox id="notification" label="Activé"/>
+		</s:FormItem>
+		<s:FormItem label="Répondeur automatique">
+			<s:TextInput id="repondeur" width="266"/>
+		</s:FormItem>
+		<s:FormItem label="Voir les entrées et sorties du salon">
+			<s:CheckBox id="salon" label="Activé"/>
+		</s:FormItem>
+		<s:FormItem label="Rendre sa webcam invisible">
+			<s:CheckBox id="webcam" label="Activé"/>
+		</s:FormItem>
+		<s:FormItem>
+			<s:Button id="valider" label="Valider"/>
+		</s:FormItem>
+	</s:Form>
+	
+</s:TitleWindow>

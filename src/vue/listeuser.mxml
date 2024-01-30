@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   x="11" y="9" width="576" height="360"
+			   mouseDownOutside="PopUpManager.removePopUp(this)" title="Liste des connectés">
+	<fx:Declarations>
+		<!-- Placer ici les éléments non visuels (services et objets de valeur, par exemple). -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import connexion.ConnexionIRC;
+			
+			import ctrl.OuverturePV;
+			
+			import modele.IrcNick;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.managers.PopUpManager;
+			
+			private var salon:ArrayCollection;
+			private var tempObj:Object = {};
+			
+			public function init(salon:ArrayCollection):void {
+				this.salon=salon;
+				this.salon.filterFunction = filterFunction;
+				//this.datasalon.dataProvider=salon;	
+				this.datasalon.dataProvider=this.salon;
+			
+				//refresh the collection
+				salon.refresh();
+			}
+			
+			private function onGridDoubleClick(event:MouseEvent):void
+			{
+				
+				var oe:OuverturePV = new OuverturePV(datasalon.selectedItem.Pseudo);
+				dispatchEvent(oe);
+			} 
+			
+			
+			
+			
+			public function filterFunction(item:Object):Boolean{
+				Alert.show("wazaa" + item.Pseudo);
+				var retVal:Boolean = false;
+				// check the items in the itemObj Ojbect to see if it contains the value being tested
+				if (!tempObj.hasOwnProperty(item.Pseudo)) {
+					// if not found add the item to the object
+					tempObj[item.label] = item;
+					retVal = true;
+				}
+				
+				return retVal;
+				// or if you want to feel like a total bad ass and use only one line of code, use a tertiary statement 
+				// return (tempObj.hasOwnProperty(item.label) ? false : tempObj[item.label] = item && true);
+			}
+			
+
+			
+			
+		]]>
+	</fx:Script>
+	<s:DataGrid id="datasalon" x="10" y="10" width="546" height="291" requestedRowCount="4"  doubleClickEnabled="true"  doubleClick="onGridDoubleClick(event)" >
+	</s:DataGrid>
+</s:TitleWindow>

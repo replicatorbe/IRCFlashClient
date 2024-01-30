@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<mx:Application 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:flexlib="http://code.google.com/p/flexlib/"
+	xmlns="*"
+	xmlns:vue="vue.*"
+	xmlns:fnicollet="http://www.flex-tutorial.fr/2009"
+	styleName="plain" width="100%" height="100%" preinitialize="onInit()" creationComplete="demarrage()" layout="absolute">
+	
+	<mx:Script>
+		<![CDATA[
+			import connexion.ConnexionIRC;
+			
+			import ctrl.AccueilCtrl;
+			import ctrl.ConnectEvent;
+			import ctrl.OuverturePV;
+			
+			import modele.IRCColors;
+			
+			import mx.collections.ArrayCollection;
+			import mx.core.FlexGlobals;
+			import mx.core.IFlexDisplayObject;
+			import mx.events.CloseEvent;
+			import mx.managers.PopUpManager;
+			import mx.utils.StringUtil;
+			
+			import vue.FenetreConnexion;
+			import vue.listesalon;
+			import vue.listeuser;
+			
+		
+			public var ctrle:AccueilCtrl;
+			public var fBox2 : IFlexDisplayObject; 
+			public var dBox1 : IFlexDisplayObject; 
+			public var dBox2 : IFlexDisplayObject; 
+			public var dBox3 : IFlexDisplayObject; 
+			
+		
+			private function onInit():void {
+				ctrle = new AccueilCtrl(this);
+			
+			}
+			
+			private function demarrage():void
+			{
+				ctrle.demarrage();
+			}
+			
+			public function openPopupDemarrage():void 
+			{
+			
+				
+				
+				
+			}
+			
+			public function openConnexion():void 
+			{
+		/*		popup = FenetreConnexion(PopUpManager.createPopUp(this,FenetreConnexion,true));
+				PopUpManager.centerPopUp(popup);
+				popup.addEventListener(ConnectEvent.CONNECT_EVENT_TYPE, ctrle.onConnectionAttempt); */
+			}
+			
+
+			
+			public function openPopupUsers():void
+			{
+				fBox2 = PopUpManager.createPopUp(this,listeuser,false) as listeuser;
+				PopUpManager.centerPopUp(fBox2); 
+			}
+			
+			public function openPopupSalons():void
+			{
+				dBox1 = PopUpManager.createPopUp(this,listesalon,false) as listesalon;
+				PopUpManager.centerPopUp(dBox1);	
+			}
+			
+			public function openCameraUser():void
+			{
+				dBox2 = PopUpManager.createPopUp(this,lecteurvideo,false) as lecteurvideo;
+				PopUpManager.centerPopUp(dBox2);	
+			}		
+			
+			public function openOptions():void
+			{
+				dBox3 = PopUpManager.createPopUp(this,option,false) as option;
+				PopUpManager.centerPopUp(dBox3);	
+			}	
+			
+		]]>
+		
+	</mx:Script>
+	
+	<mx:Style source="vue/assets/SuperTabStyles.css" />	
+	
+	<mx:Panel id="ircPanel" width="100%" height="100%" backgroundColor="#FFFFFF" barColor="#82b9df"
+			  layout="absolute">
+		<mx:Canvas x="0" y="64" width="100%" height="440">
+			<mx:HDividedBox left="0" right="0" top="0" height="367" backgroundColor="#82b9df" liveDragging="false">
+				<flexlib:SuperTabNavigator id="tabs" width="100%" height="360" borderThickness="1">
+					<vue:salon id="statusTab" width="100%" height="100%" backgroundColor="#82b9df"/>
+				</flexlib:SuperTabNavigator>
+			</mx:HDividedBox>
+			
+			<mx:HBox left="180" right="261" bottom="1" height="50" borderStyle="solid"
+					 horizontalAlign="center" textAlign="left" verticalAlign="middle">
+				<mx:ColorPicker id="color" x="35" width="48" height="100%"/>
+				<mx:TextInput id="messageLine" left="83" right="175" bottom="0" width="80%"
+							  height="80%" backgroundColor="#FFFFFF" borderStyle="none"
+							  maxChars="255" themeColor="#FEFFFF" />
+				<mx:Button id="envoyer" x="540" width="140" height="80%" label="Envoyer"
+						   fontSize="16"/>
+				
+			</mx:HBox>
+			<mx:Canvas x="180" y="366" width="649" height="23">
+				<mx:Image id="s1" x="15" y="2" width="20" height="20" source="vue/assets/angry.gif"
+						  toolTip=":(" />
+				<mx:Image id="s2" x="43" y="1" width="20" height="20" source="vue/assets/biggrin.gif"
+						  toolTip=":D"/>
+				<mx:Image id="s3" x="70" y="2" width="20" height="20" source="vue/assets/ohmy.gif"
+						  toolTip=":O"/>
+				<mx:Image id="s4" x="98" y="2" width="20" height="20" source="vue/assets/sad.gif"/>
+				<mx:Image id="s5" x="125" y="2" width="20" height="20" source="vue/assets/smile.gif"/>
+				<mx:Image id="s6" x="154" y="2" width="20" height="20" source="vue/assets/tongue.gif"/>
+				<mx:Image id="s7" x="181" y="2" width="20" height="20" source="vue/assets/wink.gif"/>
+				<mx:Image id="s8" x="210" y="3" width="20" height="20" source="vue/assets/vin.gif"/>
+				<mx:Image id="s9" x="239" y="3" width="20" height="20" source="vue/assets/rose.gif"/>
+				<mx:Image id="s10" x="271" y="1" width="20" height="20" source="vue/assets/3d.png"/>
+				<mx:Image id="s11" x="301" y="2" width="20" height="20" source="vue/assets/yeah.png"/>
+				<mx:Image id="s12" x="328" y="2" width="20" height="20" source="vue/assets/amour.png"/>
+				<mx:Image id="s13" x="357" y="2" width="20" height="20" source="vue/assets/rose1.gif"/>
+				<mx:Image id="s14" x="388" y="2" width="20" height="20" source="vue/assets/cafe.gif"/>
+				<mx:Image id="s15" x="415" y="2" width="20" height="20" source="vue/assets/pizza.gif"/>
+				<mx:Image id="s16" x="443" y="2" width="20" height="20" source="vue/assets/frite.gif"/>
+				<mx:Image id="s17" x="472" y="2" width="20" height="20"
+						  source="vue/assets/cochon.gif"/>
+				<mx:Image id="s18" x="500" y="2" width="20" height="20"
+						  source="vue/assets/coeurbrise.gif"/>
+				<mx:Image id="s19" x="529" y="0" width="20" height="20"
+						  source="vue/assets/coeurr.gif"/>
+				<mx:Image id="s20" x="558" y="1" width="20" height="20" source="vue/assets/cousu.gif"/>
+				<mx:Image id="s21" x="585" y="1" width="20" height="20"
+						  source="vue/assets/enerver.gif"/>
+				<mx:Image id="s22" x="613" y="0" width="20" height="20" source="vue/assets/help.gif"/>
+			</mx:Canvas>
+			
+		</mx:Canvas>
+		
+		<mx:Canvas x="0" y="0" width="100%" height="33" backgroundColor="#b1d6f1" borderStyle="none"
+				   horizontalScrollPolicy="off" textAlign="center">
+			
+			<mx:Button id="boutonaide" x="650" y="8" width="83" height="17" label="Aide"
+					   cornerRadius="10" icon="@Embed('vue/assets/help.png')"/>
+			<mx:Button id="boutonsalon" x="759" y="8" width="86" height="17" label="Salons"
+					   cornerRadius="10" icon="@Embed('vue/assets/home.png')"/>
+			<mx:Button id="boutonconnecte" x="869" y="8" width="99" height="17" label="Connecté"
+					   cornerRadius="10" icon="@Embed('vue/assets/chatteurs.png')"/>
+			<mx:Button id="boutonquitter" x="991" y="8" width="89" height="17" label="Quitter"
+					   cornerRadius="10" icon="@Embed('vue/assets/quit.png')"/>
+			<mx:Button id="boutonoption" x="539" y="8" width="90" height="17" label="Options"
+					   cornerRadius="10" icon="@Embed('vue/assets/options1.png')"/>
+			<mx:Label x="18" y="9" fontWeight="bold" text="Pseudo"/>
+			<mx:TextInput id="textpseudo" x="69" y="6" width="204" />
+			
+		</mx:Canvas>
+		<mx:Canvas x="0" y="31" width="100%" height="35" backgroundColor="#b1d6f1">
+			<mx:TextInput id="texttopic" x="1" y="7" width="100%" editable="false" />
+		</mx:Canvas>
+		
+	</mx:Panel>
+	<fnicollet:Toaster id="simpleToaster" width="100%" height="100%">
+	</fnicollet:Toaster>
+</mx:Application>

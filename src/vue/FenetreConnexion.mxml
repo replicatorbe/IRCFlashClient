@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="472" height="366" 
+		 initialize="init(event);">
+	<fx:Declarations>
+		<!-- Placer ici les éléments non visuels (services et objets de valeur, par exemple). -->
+		
+		<mx:StringValidator id="validPseudo" source="{nick}" property="text" 
+							trigger="{seconnecterbouton}" triggerEvent="click" requiredFieldError="Ce champ est obligatoire." />
+		
+		<mx:StringValidator id="validAge" source="{age}" property="value" 
+							trigger="{seconnecterbouton}" triggerEvent="click" requiredFieldError="Ce champ est obligatoire." />
+		
+		
+		
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import ctrl.ConnectEvent;
+			
+			import flash.net.SharedObject;
+			
+			import modele.ConfigEnvironnement;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.core.FlexGlobals;
+			import mx.effects.easing.*;
+			import mx.events.FlexEvent;
+			import mx.events.ValidationResultEvent;
+			import mx.utils.StringUtil;
+			
+			import spark.events.IndexChangeEvent;
+			
+					
+			private var server:String = "chat-sexe.net";
+			private var port:int = 6667;
+			private var asv:String;
+			private var cache:SharedObject;
+			//permet de lancer automatiquement la connexion (utile pour l'applet)
+		
+			
+
+			
+			private function init(e:Event):void
+			{
+				
+				
+				this.addEventListener(KeyboardEvent.KEY_DOWN, clavierpopup);
+			
+				
+					cache = SharedObject.getLocal("epfc.cache");
+					nick.text = cache.data.nick == null ? FlexGlobals.topLevelApplication.parameters.pseudo : cache.data.nick;
+					ville.text = cache.data.ville == null ? FlexGlobals.topLevelApplication.parameters.ville : cache.data.ville;
+					age.value = cache.data.age == null ? FlexGlobals.topLevelApplication.parameters.age : parseInt(cache.data.age);
+					sexe.selectedItem = cache.data.sexe == null ? FlexGlobals.topLevelApplication.parameters.sexe : cache.data.sexe;
+	
+			}
+			
+			
+			//evenement clavier popup
+			private function clavierpopup(event:KeyboardEvent):void
+			{
+				if (event.keyCode == Keyboard.ENTER) {
+					
+					seConnecter(event);
+				}
+			}
+			
+			public function seConnecter(e:Event):void
+			{	
+				/**
+				 * On créer les infos de connexion
+				 * */
+			
+				asv = "" + age.value + " " + sexe.selectedItem + " " + ville.text + "";
+				
+				var reValidPseudoEvent:ValidationResultEvent = validPseudo.validate();
+				var reValidAgeEvent:ValidationResultEvent = validAge.validate();
+				
+				//on vérifie que les 2 champs de formulaires ont été entrée!
+				if (reValidPseudoEvent.type == ValidationResultEvent.VALID
+					&& reValidAgeEvent.type == ValidationResultEvent.VALID) {
+					
+					var ce:ConnectEvent = new ConnectEvent(ConfigEnvironnement.getInstance().getServeur(),ConfigEnvironnement.getInstance().getPort(),StringUtil.trim(nick.text),"#accueil",asv);
+					updateObjetPartager();
+					dispatchEvent(ce);
+				}
+			}
+			
+			public function seConnect(e:Event):void
+			{	
+				Alert.show("okok");
+			seConnecter(e);
+			}
+			
+	
+			/**
+			 * permet de garde en mémoire les infos de l'utilisateur
+			 * */
+			
+			private function updateObjetPartager():void
+			{
+			
+				cache.data.nick = nick.text;
+				cache.data.ville = ville.text;
+				cache.data.sexe = sexe.selectedItem;
+				cache.data.age = age.value;
+				cache.flush();
+				
+			}
+			
+			protected function myCB_changeHandler(event:IndexChangeEvent):void
+			{				
+				if (sexe.selectedIndex == spark.components.ComboBox.CUSTOM_SELECTED_ITEM)					
+				
+					sexe.dataProvider.addItem(sexe.selectedItem);
+			}
+			
+		]]>
+	</fx:Script>
+	
+	
+	<s:TitleWindow x="20" y="10" width="433" height="333" title="Connectez-vous!">
+		<s:Form id="form" x="18" y="17" width="269" height="260" textAlign="center">
+			<s:FormItem width="390" label="Pseudo">
+				<s:TextInput id="nick"/>
+			</s:FormItem>
+			<s:FormItem width="391" label="Age">
+				<s:NumericStepper id="age" maximum="120" minimum="10"/>
+			</s:FormItem>
+			<s:FormItem width="391" label="Sexe">
+				<s:ComboBox id="sexe" width="140" change="myCB_changeHandler(event);"> 
+					<s:dataProvider>
+						<mx:ArrayList>
+							<fx:String>F</fx:String>
+							<fx:String>H</fx:String>
+						</mx:ArrayList>
+					</s:dataProvider>
+				</s:ComboBox>			
+			</s:FormItem>
+			<s:FormItem width="390" label="Ville">
+				<s:TextInput id="ville" width="141"/>
+			</s:FormItem>
+			<s:FormItem width="391">
+				<s:Button id="seconnecterbouton" width="137" label="Se connecter" />
+			</s:FormItem>
+		</s:Form>
+		<s:Label x="302" y="39" width="124" height="82" text="Bienvenue sur le chat de Jérôme :-) Bon séjour en notre compagnie... :-)"/>
+	</s:TitleWindow>
+</s:Group>

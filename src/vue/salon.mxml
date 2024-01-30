@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<mx:Canvas xmlns:fx="http://ns.adobe.com/mxml/2009"
+		   xmlns:s="library://ns.adobe.com/flex/spark"
+		   xmlns:mx="library://ns.adobe.com/flex/mx"
+		   width="100%" height="100%" initialize="init();" creationComplete="demarrage();" 
+		   creationPolicy="all"
+		   fontFamily="calibri" show="giveFocus(true)" >
+	
+	<fx:Declarations>
+		<!-- Placer ici les éléments non visuels (services et objets de valeur, par exemple). -->
+		<mx:DefaultListEffect id="myDLE" fadeOutDuration="1000" color="0xA3CED7" />	
+	</fx:Declarations>
+	
+	<fx:Script>
+		
+		
+		<![CDATA[
+			import connexion.ConnexionIRC;
+			
+			import ctrl.*;
+			
+			import flash.events.ContextMenuEvent;
+			import flash.net.SharedObject;
+			
+			import modele.*;
+			
+			import mx.collections.ArrayCollection;
+			import mx.collections.Sort;
+			import mx.containers.TabNavigator;
+			import mx.containers.TitleWindow;
+			import mx.controls.Alert;
+			import mx.controls.Button;
+			import mx.controls.Image;
+			import mx.controls.TabBar;
+			import mx.controls.menuClasses.MenuBarItem;
+			import mx.core.IToolTip;
+			import mx.events.CloseEvent;
+			import mx.events.ItemClickEvent;
+			import mx.events.ListEvent;
+			import mx.formatters.DateBase;
+			import mx.managers.PopUpManager;
+			import mx.managers.ToolTipManager;
+			import mx.skins.halo.BrokenImageBorderSkin;
+			import mx.utils.StringUtil;
+			
+			
+		
+			public var chanId:String;
+			private var ircp:ConnexionIRC;
+			private var nickRolled:IrcNick;
+			private	var ircW:accueil;
+			public var ctrle:SalonCtrl;
+		
+			[Embed(source="assets/homme.gif")]
+			private var homme_icon:Class;
+			
+			[Embed(source="assets/femme.gif")]
+			private var femme_icon:Class;
+			
+			[Embed(source="assets/fantome.gif")]
+			private var fantome_icon:Class;
+			
+			
+			/**
+			 * liste d'icone a coté du jlist
+			 * */
+			
+			private function list_iconFunc(item:Object):Class {
+				var iconClass:Class;
+				
+					if ((item.getSexe()=="h") || (item.getSexe()=="H") || (item.getSexe()=="m") || (item.getSexe()=="M")) {
+					
+					iconClass = homme_icon;
+					return iconClass;
+				} else if ((item.getSexe()=="f") || (item.getSexe()=="F")) {
+					iconClass = femme_icon;
+					return iconClass;
+					
+				}  else {
+					iconClass = fantome_icon;
+					return iconClass;
+				}
+			}
+
+			public function setIrcp(myircp:ConnexionIRC):void
+			{
+				this.ircp = myircp;
+			}
+			
+			
+			private function init():void
+			{
+				ctrle=new SalonCtrl(this,ircp,ircW,chanId);
+			}
+			
+			private function demarrage():void
+			{			
+				ircW = this.parentDocument as accueil;
+				ircW.texttopic.htmlText = IRCColors.htmlencode(ctrle.getTitle());
+				this.giveFocus(false);
+			}
+			
+		
+			
+			public function setID(id:String):void
+			{
+				this.chanId = id;
+				label=id;
+			}
+			
+			public function giveFocus(color:Boolean):void
+			{
+				var tabs:TabNavigator = this.parent as TabNavigator;
+				var myTabBt:Button = tabs.getTabAt(tabs.getChildIndex(this)) as Button;
+				if (color)
+				myTabBt.setStyle("color","Black");
+				
+				ircW.messageLine.setFocus();
+				ircW.messageLine.setSelection(ircW.messageLine.text.length,ircW.messageLine.text.length);
+				ircW.texttopic.htmlText = IRCColors.htmlencode(ctrle.getTitle());
+			}
+			
+			public function giveFocus1():void
+			{
+				var tabs:TabNavigator = this.parent as TabNavigator;
+				var myTabBt:Button = tabs.getTabAt(tabs.getChildIndex(this)) as Button;
+				
+					myTabBt.setStyle("color","Black");
+				
+				ircW.messageLine.setFocus();
+				ircW.messageLine.setSelection(ircW.messageLine.text.length,ircW.messageLine.text.length);
+				ircW.texttopic.htmlText = IRCColors.htmlencode(ctrle.getTitle());
+			}
+
+			private function saveRolledOver(evt:ListEvent):void 
+			{
+				var nickListData:ArrayCollection = nickList.dataProvider as ArrayCollection;
+				var nick:IrcNick = nickListData[evt.rowIndex];
+				nickRolled = nick;
+			}
+			
+
+			
+			private function onMouseUp():void {
+				var temp:String = ircView.text.substring(ircView.selectionBeginIndex,ircView.selectionEndIndex);
+				System.setClipboard(temp);
+			}
+			
+			private function onDoubleClick():void {
+				
+			}
+			
+		
+			private var tt:IToolTip;
+			
+			
+			private function toolTipCreate(evt:ListEvent):void {
+				if (tt) {
+					toolTipDestroy();
+				}
+				
+				if (nickList.selectedItem.Nick!="null") {
+					var aNick:IrcNick = ctrle.getNick(nickList.selectedItem.Nick); 
+					var message:String = aNick.Age + " " + aNick.getSexe() + " " + aNick.Ville;
+					tt = ToolTipManager.createToolTip(message!="0  " ? message : "Inconnu", this.mouseX, this.mouseY);
+					
+					var myTimer:Timer = new Timer(100, 10);
+					myTimer.start()
+					myTimer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete);
+				}
+			}
+			
+	
+			private function onTimerComplete(event:Event):void {
+				toolTipDestroy();
+			}
+			
+			private function toolTipDestroy():void {
+				
+				if (tt) {
+					ToolTipManager.destroyToolTip(tt);
+					tt = null;
+				}
+			}
+						
+	
+			public function listCamera_change(evt:ListEvent):void {
+				
+				var tList:List = evt.currentTarget as List;
+				var cameraName:String = tList.selectedIndex.toString();
+				webcam.getInstance().setCamera(Camera.getCamera(cameraName));
+				Alert.show("Votre camera a bien été selectionné");
+				ConfigEnvironnement.getInstance().setCam(true);
+				ctrle.initCamera();
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<mx:HDividedBox id="divbar" left="0" top="0" right="0" bottom="0">
+		<mx:Canvas id="chatCanvas" width="100%" height="100%" horizontalScrollPolicy="off"
+				   backgroundColor="#FFFFFF">
+			<mx:TextArea id="ircView" width="100%" height="100%" borderThickness="0" click="giveFocus(false)"
+						 condenseWhite="true" doubleClick="onDoubleClick()" editable="true"
+						 enabled="true" fontFamily="calibri" fontSize="14"
+						 textAlign="left" wordWrap="true"/>
+		</mx:Canvas>
+		<mx:Accordion id="acc" width="200" height="100%" creationPolicy="all" fontFamily="calibri" fontSize="14">
+			<s:NavigatorContent id="accord" width="100%" height="100%" fontFamily="calibri" fontSize="18" label="Chatteurs" icon="@Embed('vue/assets/chatteurs.png')">
+				<mx:List id="nickList" x="10" y="10" width="100%" height="100%" borderThickness="0"
+						 doubleClickEnabled="true" fontFamily="calibri" fontSize="14"
+						 iconField="myIcon" iconFunction="list_iconFunc"
+						 itemClick="toolTipCreate(event)"
+						 itemRollOver="saveRolledOver(event)" itemsChangeEffect="{myDLE}"
+						 variableRowHeight="true">
+				</mx:List>
+				
+			</s:NavigatorContent>
+			<s:NavigatorContent id="accordsalon" width="100%" height="100%" fontFamily="calibri" fontSize="18" label="Salon" icon="@Embed('vue/assets/home.png')">
+				<mx:Button id="boutonsortir" x="10" y="35" width="178" height="17" fontFamily="calibri" fontSize="14" label="Sortir"
+						   cornerRadius="10" icon="@Embed('vue/assets/sortir.gif')"  />
+				<mx:Button x="10" y="62" width="178" height="18" label="Mauvais comportement"
+						   cornerRadius="10" icon="@Embed('vue/assets/probleme.png')" fontFamily="calibri" fontSize="14" id="boutoncomportement" />
+				<mx:Button x="10" y="90" width="178" height="18" label="Faire une action"
+						   cornerRadius="10" icon="@Embed('vue/assets/probleme.png')" fontFamily="calibri" fontSize="14" />
+			</s:NavigatorContent>
+			
+			<s:NavigatorContent id="accordwebcam" width="100%" height="100%" label="Webcam" fontFamily="calibri" fontSize="18" icon="@Embed('vue/assets/videos.png')">
+				<mx:List id="listewebcam" x="10" y="10" width="100%" height="86" fontFamily="calibri" fontSize="14" borderThickness="0"
+						 doubleClickEnabled="true" dataProvider="{Camera.names}" change="listCamera_change(event)">
+				</mx:List>
+			
+				<mx:VideoDisplay id="my_video_display" x="10" y="103" width="178" height="150"
+								 autoPlay="true"/>
+			</s:NavigatorContent>
+			
+			<s:NavigatorContent id="webcampv" width="100%" height="100%" fontFamily="calibri" fontSize="18" label="Options" icon="@Embed('vue/assets/videos.png')">
+				<mx:Button id="boutoncampv" visible="false" x="10" y="35" width="178" height="17"
+						   label="Demander webcam" cornerRadius="10" fontFamily="calibri"
+						   fontSize="14" icon="@Embed('vue/assets/videos.png')" />
+			</s:NavigatorContent>
+			
+		</mx:Accordion>	
+		
+	</mx:HDividedBox>
+</mx:Canvas>
