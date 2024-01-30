@@ -4,7 +4,7 @@
 
 ## Introduction
 
-ChatFlash était un projet de chat en ligne développé entre 2008 et 2014. Il offrait aux internautes la possibilité de tchatter en utilisant une interface conviviale, tout en se connectant à des canaux IRC et en utilisant la technologie Red5 pour la gestion des webcams. Malheureusement, le projet a été abandonné en 2020 suite à la décision d'Adobe d'arrêter la prise en charge de Flash Player.
+ChatFlash était un projet de chat en ligne développé entre 2008 et 2014. Il offrait aux internautes la possibilité de tchatter en utilisant une interface conviviale, tout en se connectant à des canaux IRC et en utilisant la technologie Red5 pour la gestion des webcams. Malheureusement, le projet a été abandonné en 2014 suite à la décision d'Adobe d'arrêter la prise en charge de Flash Player.
 
 ## Pourquoi ChatFlash ?
 
@@ -48,7 +48,7 @@ Si vous souhaitez utiliser ce projet à des fins commerciales ou obtenir une lic
 
 ## Introduction
 
-ChatFlash was an online chat project developed between 2008 and 2014. It offered internet users the ability to chat using a user-friendly interface while connecting to IRC channels and utilizing Red5 technology for webcam management. Unfortunately, the project was abandoned in 2020 due to Adobe's decision to end support for Flash Player.
+ChatFlash was an online chat project developed between 2008 and 2014. It offered internet users the ability to chat using a user-friendly interface while connecting to IRC channels and utilizing Red5 technology for webcam management. Unfortunately, the project was abandoned in 2014 due to Adobe's decision to end support for Flash Player.
 
 ## Why ChatFlash?
 
