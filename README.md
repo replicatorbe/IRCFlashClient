@@ -7,6 +7,10 @@ by sMug (Jérôme Fafchamps)
 
 ChatFlash était un projet de chat en ligne développé entre 2008 et 2014. Il offrait aux internautes la possibilité de tchatter en utilisant une interface conviviale, tout en se connectant à des canaux IRC et en utilisant la technologie Red5 pour la gestion des webcams. Malheureusement, le projet a été abandonné en 2014 suite à la décision d'Adobe d'arrêter la prise en charge de Flash Player.
 
+##Pre-requis
+
+Vous pouvez utiliser le FlashPolicyd d'Abode pour pouvoir faire fonctionner ce player sur un autre réseau IRC qu'héberger sur la même machine. => https://github.com/replicatorbe/docker-flashpolicyd/
+
 ## Pourquoi ChatFlash ?
 
 ChatFlash a été créé dans le but de fournir une plateforme de chat en ligne simple, ludique et interactive. Il permettait aux utilisateurs de se connecter à des salons de discussion IRC et de participer à des discussions en direct, tout en utilisant la technologie Red5 pour partager des vidéos en streaming via leur webcam.
